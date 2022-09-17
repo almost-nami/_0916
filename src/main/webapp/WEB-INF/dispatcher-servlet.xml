@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <mvc:annotation-driven></mvc:annotation-driven>
+    <context:component-scan base-package="org.zerock.controller"></context:component-scan>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <beans:property name="defaultEncoding" value="utf-8"></beans:property>
+        <!-- 1024 * 1024 * 10 bytes 10MB -->
+        <!-- 한 번의 Request로 전달될 수 있는 최대의 크기 -->
+        <beans:property name="maxUploadSize" value="104857560"></beans:property>
+        <!-- 1024 * 1024 * 2 bytes 2MB -->
+        <!--하나의 파일 최대 크기 -->
+        <beans:property name="maxUploadSizePerFile" value="2097152"></beans:property>
+        <beans:property name="uploadTempDir" value="file:/Users/nami/Documents/spring/upload/tmp"></beans:property>
+        <!-- 메모리상에서 유지하는 최대의 크기 -->
+        <beans:property name="maxInMemorySize" value="1048575"></beans:property>
+    </beans:bean>
+</beans>
