@@ -5,22 +5,30 @@
        xmlns:beans="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
+    <!-- 어노테이션 활성화 -->
     <mvc:annotation-driven></mvc:annotation-driven>
+
+    <!-- 지정된 패키지를 스캔하여 Bean으로 생성해서 관리함 -->
     <context:component-scan base-package="org.zerock.controller"></context:component-scan>
+    <context:component-scan base-package="org.zerock.exception"></context:component-scan>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>
 
+    <!-- 파일 업로드의 경우 id 속성 값은 반드시 "multipartResolver" -->
     <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- defaultEncoding은 업로드하는 파일의 이름이 한글일 경우 깨지는 문제를 처리함 -->
         <beans:property name="defaultEncoding" value="utf-8"></beans:property>
-        <!-- 1024 * 1024 * 10 bytes 10MB -->
         <!-- 한 번의 Request로 전달될 수 있는 최대의 크기 -->
+        <!-- 1024 * 1024 * 10 bytes 10MB -->
         <beans:property name="maxUploadSize" value="104857560"></beans:property>
-        <!-- 1024 * 1024 * 2 bytes 2MB -->
         <!--하나의 파일 최대 크기 -->
+        <!-- 1024 * 1024 * 2 bytes 2MB -->
         <beans:property name="maxUploadSizePerFile" value="2097152"></beans:property>
+        <!-- 최대 크기 이상의 데이터는 uploadTempDir에 임시 파일 형태로 보관됨 -->
+        <!-- 절대경로를 이용하려면 URI형태로 제공해야 하므로 "file:/"로 시작 -->
         <beans:property name="uploadTempDir" value="file:/Users/nami/Documents/spring/upload/tmp"></beans:property>
         <!-- 메모리상에서 유지하는 최대의 크기 -->
         <beans:property name="maxInMemorySize" value="1048575"></beans:property>

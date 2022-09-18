@@ -12,5 +12,7 @@
 </head>
 <body>
 This is Home.jsp
+<hr>
+serverTime : ${ serverTime }
 </body>
 </html>

@@ -3,18 +3,49 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
+    <!-- 가장 먼저 구동되는 Context Listener -->
+    <!-- root-context.xml 경로 -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>/WEB-INF/applicationContext.xml</param-value>
     </context-param>
+
+    <!-- 스프링 MVC의 ContextLoaderListener -->
+    <!-- ContextLoaderListener는 웹 애플리케이션 구동시 같이 동작함 -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    <!--
+        root-context.xml이 처리되면 파일에 있는 Bean설정들이 동작하게 됨
+        root-context.xml에 정의된 객체(Bean)들은 스프링의 영역(Context) 안에 생성되고 객체들 간의 의존성이 처리됨
+    -->
+
+    <!--
+        org.springframework.web.servlet.DispatcherServlet 클래스는 스프링 MVC의 구조에서 가장 핵심적인 역할을 하는 클래스
+        servlet-context.xml : 웹 관련 처리의 준비작업을 할 때 사용하는 파일
+        DispatcherServlet에서 XmlWebApplicationContext를 이용해서 servlet-context.xml을 로딩하고 해석
+            -> 이 과정에서 등록된 객체(Bean)들은 기존에 만들어진 객체(Bean)들과 같이 연동됨
+    -->
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/dispatcher-servlet.xml</param-value>
+        </init-param>
+        <!-- 404 에러처리를 위한 설정 -->
+        <init-param>
+            <param-name>throwExceptionIfNoHandlerFound</param-name>
+            <param-value>true</param-value>
+        </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+
+    <!--
+        모든 Request를 DispatcherServlet이 받도록 설정
+        -> Front-Controller 패턴
+    -->
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
